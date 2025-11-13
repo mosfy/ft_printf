@@ -1,32 +1,41 @@
-NAME = libft.a
+NAME = libftprintf.a
 TEST = a.out
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC =
-BONUS = 
+SRC = ft_printf.c
+OBJ = $(SRC:.c=.o)
+
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
 TEST_OBJ = main.o
 
-HEADER = libft.h
+HEADER = ft_printf.h
 
-all: $(NAME)
+all: $(LIBFT) $(NAME)
 
-$(NAME): $(SRC)
-	ar rcs $(NAME) $(SRC)
+$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR)
 
-bonus: $(SRC) $(BONUS)
-	ar rcs $(NAME) $(SRC) $(BONUS)
+$(NAME): $(OBJ) $(LIBFT)
+	ar rcs $(NAME) $(OBJ)
+	cp $(LIBFT) $(NAME)
+	ar rcs $(NAME) $(OBJ)
 
 $(TEST): $(NAME) $(TEST_OBJ)
-	$(CC) $(CFLAGS) $(TEST_OBJ) -L. -lft -o $(TEST)
-test: all bonus $(TEST)
+	$(CC) $(CFLAGS) $(TEST_OBJ) $(NAME) -o $(TEST)
+
+test: $(TEST)
 	./$(TEST)
+
 clean:
-	rm -f $(SRC) $(BONUS) $(TEST_OBJ)
+	rm -f $(OBJ) $(TEST_OBJ)
+	@$(MAKE) clean -C $(LIBFT_DIR)
 
 fclean: clean
 	rm -f $(NAME) $(TEST)
+	@$(MAKE) fclean -C $(LIBFT_DIR)
 
 re: fclean all
