@@ -4,8 +4,7 @@ TEST = a.out
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = ft_printf.c
-OBJ = $(SRC:.c=.o)
+OBJ = ft_printf.o ft_printf_chars.o ft_printf_hex.o ft_printf_numbers.o ft_printf_pointer.o
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a

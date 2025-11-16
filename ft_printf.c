@@ -5,72 +5,63 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tfrances <tfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/13 10:00:00 by yourlogin         #+#    #+#             */
-/*   Updated: 2025/11/13 19:04:38 by tfrances         ###   ########.fr       */
+/*   Created: 2025/10/29 01:48:57 by tfrances          #+#    #+#             */
+/*   Updated: 2025/11/16 17:29:34 by tfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "libft.h"
 
-size_t	print_char(va_list *ap)
+size_t	handle_format(char spec, va_list *ap)
 {
-	char	c;
+	static t_pfn	ga[256] = {['c'] = print_char, ['d'] = print_number,
+	['i'] = print_number, ['u'] = print_unsigned_number,
+	['s'] = print_str, ['%'] = print_percent,
+	['x'] = print_hexa_numberx, ['X'] = print_hexa_number_x,
+	['p'] = print_pointer};
 
-	c = va_arg(*ap, int);
-	write(1, &c, 1);
-	return (1);
+	if (ga[(int)spec])
+		return (ga[(int)spec](ap));
+	return (0);
 }
 
-size_t	print_number(va_list *ap)
+int	ft_printf(const char *fmt, ...)
 {
-	int	n;
-
-	n = va_arg(*ap, int);
-	write(1, "oh tu membetes avec tes ints toi\n", 33);
-	return (33);
-}
-
-int	ft_printf(char *fmt, ...)
-{
-	static t_pfn	g_a[] = {
-		['c'] = print_char,
-		['d'] = print_number,
-	};
-
-	int i;
-	int	lenght;
-	int count;
+	int		i;
+	int		lenght;
+	int		count;
 	va_list	ap;
 
 	i = 0;
 	count = 0;
 	lenght = ft_strlen(fmt);
-	va_start(ap,fmt);
+	va_start(ap, fmt);
 	while (i < lenght)
 	{
 		if (fmt[i] == '%')
 		{
-			g_a[(int)fmt[i + 1]](&ap);
+			count += handle_format(fmt[i + 1], &ap);
+			i = i + 2;
 		}
-		ft_putchar_fd(fmt[i],1);
-		i++;
+		else
+		{
+			ft_putchar_fd(fmt[i], 1);
+			i++;
+			count++;
+		}
 	}
-	return (0);
-
-	// va_start(v, fmt);
-	// format = 'c';
-	// if (!strchr("csdx", format))
-	// 	return (-1);
-	// g_a[(int)format](&v);
-	// size = strchr(fmt, '%') - fmt;
-	// write(1, fmt, size);
-	// fmt += size + 2;
-	// va_end(v);
-	// return (0);
+	return (count);
 }
 
-int	main(void)
+/*
+int main(void) 
 {
-	ft_printf("hello %c world %d", 'b', 10);
-	return (0);
-}
+	 char* test = "test"; 
+	ft_printf("%d ",ft_printf("hello %c world %d and %s %% and for 
+	sure %u and don't forget %x %X %p:", 'b', 10, "cool", 2,200,200, test)); 
+	printf("\n"); 
+	printf("%d ",printf("hello %c world %d and %s %% and for sure 
+	%u and don't forget %x %X %p:", 'b', 10, "cool", 2,200,200, test));
+	 return (0); 
+}*/
