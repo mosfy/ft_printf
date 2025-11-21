@@ -54,14 +54,11 @@ int	ft_printf(const char *fmt, ...)
 	return (count);
 }
 
-/*
 int main(void) 
 {
-	 char* test = "test"; 
-	ft_printf("%d ",ft_printf("hello %c world %d and %s %% and for 
-	sure %u and don't forget %x %X %p:", 'b', 10, "cool", 2,200,200, test)); 
+	char* test = "test"; 
+	ft_printf("%d ",ft_printf("hello %c world %d and %s %% and for sure %u and don't forget %x %X %p:", 'b', 10, "cool", 2,200,200, test)); 
 	printf("\n"); 
-	printf("%d ",printf("hello %c world %d and %s %% and for sure 
-	%u and don't forget %x %X %p:", 'b', 10, "cool", 2,200,200, test));
-	 return (0); 
-}*/
+	printf("%d ",printf("hello %c world %d and %s %% and for sure %u and don't forget %x %X %p:", 'b', 10, "cool", 2,200,200, test));
+	return (0);
+} 
